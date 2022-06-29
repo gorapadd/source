@@ -1,0 +1,82 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+      routes:
+        - id: request
+          uri: http://localhost:8081
+          predicates:
+            - Path=/requests/** 
+        - id: notification
+          uri: http://localhost:8082
+          predicates:
+            - Path=/notifications/** 
+        - id: acctInfo
+          uri: http://localhost:8083
+          predicates:
+            - Path=/acctInfos/** 
+        - id: transfer
+          uri: http://localhost:8084
+          predicates:
+            - Path=/transfers/** 
+        - id: frontend
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: request
+          uri: http://request:8080
+          predicates:
+            - Path=/requests/** 
+        - id: notification
+          uri: http://notification:8080
+          predicates:
+            - Path=/notifications/** 
+        - id: acctInfo
+          uri: http://acctInfo:8080
+          predicates:
+            - Path=/acctInfos/** 
+        - id: transfer
+          uri: http://transfer:8080
+          predicates:
+            - Path=/transfers/** 
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
